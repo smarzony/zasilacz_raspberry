@@ -64,9 +64,7 @@ void setup() {
 void loop() {
 
 	mainTimer.update();
-	timeNow = millis();
-
-	
+	timeNow = millis();	
 
 	adc = analogRead(OUTPUT_CONTROL);
 	voltage = map(adc, 0, 529, 0, 501);
@@ -138,11 +136,18 @@ void loop() {
 	{
 		power_state = 0;
 		power_output = 0;
-		safe_shutdown = 0;
+		//safe_shutdown = 0;
 	}
 
-	if (power_output == 0 || emergency_shutdown == 1)
+	if (emergency_shutdown == 1)
 	{
+		power_state = 0;
+		power_output = 0;
+	}
+
+	if (power_output == 0)
+	{
+		power_output = 0;
 		shutdown_request_start_count = 0;
 		shutdown_request_count = 0;
 		shutdown_request = 0;
@@ -150,13 +155,10 @@ void loop() {
 		emergency_shutdown = 0;
 		tx_count = 0;
 	}
-
 	digitalWrite(SHUTDOWN_REQ_PIN, shutdown_request);
 	digitalWrite(POWER_PIN, !power_output);
 	power_state_last = power_state;
 	tx_state_last = tx_state;
-
-
 }
 
 void checkTX0()
@@ -182,7 +184,10 @@ void checkTX1()
 	else
 		tx_count = 0;
 	if (tx_count >= 25)
+	{
 		safe_shutdown = 1;
+		Serial.println("Safe Shutdown");
+	}
 }
 
 
@@ -223,24 +228,27 @@ void serialOutput()
 	Serial.println(toSerial);
 }
 
-void buttonAlternatePower()
-{
-	if (digitalRead(POWER_BUTTON) == 0)
-		power_state = !power_state;
-}
-
 void emergencyHandler()
 {
-	if (millis() > 4000 && !DISABLE_EMERGENCY)
+	if (millis() > 4000 && power_output == 1 && !DISABLE_EMERGENCY)
 	{
-		if (voltage > 550)
+		
+		if (voltage > 520)
+		{
 			emergency_shutdown = 1;
-		if (voltage < 470)
+
+		}
+		if (voltage < 480)
+		{
 			emergency_shutdown = 1;
-		if (voltage >= 470 && voltage <= 550)
+
+		}
+		if (voltage >= 480 && voltage <= 520)
+		{
 			emergency_shutdown = 0;
-		/*if (emergency_shutdown == 1)
-			Serial.println("EMERGENCY SHUTDOWN");*/
+		}
+		if (emergency_shutdown == 1)
+			Serial.println("EMERGENCY SHUTDOWN");
 	}
 }
 
