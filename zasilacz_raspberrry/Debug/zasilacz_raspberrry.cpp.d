@@ -11,7 +11,6 @@ C:\Users\Piotr\AppData\Local\Temp\VMBuilds\zasilacz_raspberrry\uno\Debug\zasilac
  D:\Programy\Arduino_SSD\hardware\arduino\avr\cores\arduino/USBAPI.h \
  D:\Programy\Arduino_SSD\hardware\arduino\avr\cores\arduino/Arduino.h \
  D:\Programy\Arduino_SSD\hardware\arduino\avr\variants\standard/pins_arduino.h \
- C:\Users\Piotr\Documents\Arduino\libraries\Button-master/Button.h \
  C:\Users\Piotr\Documents\Arduino\libraries\Timer-master/Timer.h \
  C:\Users\Piotr\Documents\Arduino\libraries\Timer-master/Event.h \
  C:\Users\Piotr\Documents\Arduino\libraries\Timer-master/Event.h
